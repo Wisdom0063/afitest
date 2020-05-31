@@ -6,8 +6,8 @@ import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 
 
-@Entity(name = "users")
-data class User(
+@Entity(name = "employees")
+data class Employee(
         @Id
         @GeneratedValue(
                 strategy = GenerationType.IDENTITY)
@@ -15,10 +15,11 @@ data class User(
         @Column(nullable = false)
         val name : String="",
          @Email
-        @Column(unique=true)
+        @Column(unique=true, nullable=false)
         val email : String="",
         @Column(nullable=false)
-        val password: String=""
+        val password: String="",
+        val role:String=""
 ){
 
 }

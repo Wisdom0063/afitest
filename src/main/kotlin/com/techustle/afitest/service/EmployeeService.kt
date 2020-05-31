@@ -1,7 +1,7 @@
 package com.techustle.afitest.service
 
 
-import com.techustle.afitest.model.User
+import com.techustle.afitest.model.Employee
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -9,14 +9,14 @@ import java.util.*
  * Created by Arpit Khandelwal.
  */
 @Service
-interface UserService {
+interface EmployeeService {
     /**
      * Register a new user
      *
      * @param User
      * @return
      */
-    fun signup(user: User): User?
+    fun signup(user: Employee): Employee?
 
     /**
      * Search an existing user
@@ -24,6 +24,6 @@ interface UserService {
      * @param email
      * @return
      */
-    fun findUserByEmail(email: String): Optional<User> // /**
+    fun findUserByEmail(email: String): Optional<Employee> // /**
 
 }

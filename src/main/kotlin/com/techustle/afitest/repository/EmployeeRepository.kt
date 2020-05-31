@@ -1,11 +1,11 @@
 package  com.techustle.afitest.repository;
 
-import com.techustle.afitest.model.User
+import com.techustle.afitest.model.Employee
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 
 @Repository
-interface  UserRepository : JpaRepository<User, Long>{
+interface  EmployeeRepository : JpaRepository<Employee, Long>{
 
 }
