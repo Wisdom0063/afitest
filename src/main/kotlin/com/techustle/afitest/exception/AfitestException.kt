@@ -33,6 +33,12 @@ class AfitestException @Autowired constructor(errorConfig: ErrorConfig?) {
         }
     }
 
+    class BadRequestExcepion(message: String?) : RuntimeException(message) {
+        companion object {
+            private const val serialVersionUID = 1L
+        }
+    }
+
     companion object {
         private var errorConfig: ErrorConfig? = null
 
@@ -71,6 +77,11 @@ class AfitestException @Autowired constructor(errorConfig: ErrorConfig?) {
             return throwException(exceptionType, messageTemplate, *args)
         }
 
+        fun throwException(entityType: EntityType, exceptionType: ExceptionType): RuntimeException {
+            val messageTemplate = getGeneralMessageTemplate(entityType, exceptionType)
+            return throwException(exceptionType, messageTemplate, entityType.name.toLowerCase())
+        }
+
         /**
          * Returns new RuntimeException based on EntityType, ExceptionType, id and args
          *
@@ -104,19 +115,25 @@ class AfitestException @Autowired constructor(errorConfig: ErrorConfig?) {
          * @param args
          * @return
          */
-        fun throwException(exceptionType: ExceptionType, messageTemplate: String, vararg args: String?): RuntimeException {
+        fun throwException(exceptionType: ExceptionType, messageTemplate: String,  vararg args: String?): RuntimeException {
             if (ExceptionType.ENTITY_NOT_FOUND == exceptionType) {
                 return EntityNotFoundException(format(messageTemplate, *args as Array<out String>))
             } else if (ExceptionType.DUPLICATE_ENTITY == exceptionType) {
                 return DuplicateEntityException(format(messageTemplate, *args as Array<out String>))
             } else if (ExceptionType.WRONG_CREDENTIAL == exceptionType) {
                 return WrongCredentials(format(messageTemplate, *args as Array<out String>))
+            }else if (ExceptionType.BAD_REQUEST == exceptionType) {
+                return BadRequestExcepion(format(messageTemplate, *args as Array<out String>))
             }
             return RuntimeException(format(messageTemplate, *args as Array<out String>))
         }
 
         private fun getMessageTemplate(entityType: EntityType, exceptionType: ExceptionType): String {
             return entityType.name.plus(".").plus(exceptionType.value).toLowerCase()
+        }
+
+        private fun getGeneralMessageTemplate(entityType: EntityType, exceptionType: ExceptionType): String {
+            return exceptionType.value.toLowerCase()
         }
 
         private fun format(template: String, vararg args: String): String {
@@ -126,6 +143,8 @@ class AfitestException @Autowired constructor(errorConfig: ErrorConfig?) {
                 MessageFormat.format(templateContent.get(), *argsObj)
             } else String.format(template, *argsObj)
         }
+
+
     }
 
     init {

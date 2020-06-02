@@ -122,6 +122,17 @@ class CustomizedResponseEntityExceptionHandler : ResponseEntityExceptionHandler(
         return ResponseEntity(response, HttpStatus.BAD_REQUEST)
     }
 
+    @ExceptionHandler(AfitestException.BadRequestExcepion::class)
+    fun handleBadRequestExcepion(ex: Exception, request: WebRequest?): ResponseEntity<Any> {
+        val response: Response<Any> = Response.badRequest()
+
+        //Is custom means details is not added to error object
+        val isCustom = true
+        val errors = ResponseError(ex.message, isCustom, ex)
+        response.setErrors(errors)
+        return ResponseEntity(response, HttpStatus.BAD_REQUEST)
+    }
+
     /**
      * Handle ConstraintViolationException.
      *

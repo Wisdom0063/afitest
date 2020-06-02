@@ -1,3 +1,9 @@
+/*
+ * @Author: Wisdom Kwarteng 
+ * @Date: 2020-06-01 13:06:05 
+ * @Last Modified by:   Wisdom Kwarteng 
+ * @Last Modified time: 2020-06-01 13:06:05 
+ */
 package com.techustle.afitest.service
 
 
@@ -11,19 +17,28 @@ import java.util.*
 @Service
 interface EmployeeService {
     /**
-     * Register a new user
+     * Register a new employee
      *
      * @param User
      * @return
      */
-    fun signup(user: Employee): Employee?
+    fun signup(email: String, name:String, password:String, role:String, rate:Double?): Employee?
 
     /**
-     * Search an existing user
+     * Search an existing employee by email
      *
      * @param email
      * @return
      */
-    fun findUserByEmail(email: String): Optional<Employee> // /**
+    fun findUserByEmail(email: String): Employee // /**
+
+
+    /**
+     * Search an existing employee by id
+     *
+     * @param employeeid
+     * @return
+     */
+    fun findUserById(employeeid: Long): Employee // /**
 
 }

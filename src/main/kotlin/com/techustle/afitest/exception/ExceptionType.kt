@@ -7,6 +7,6 @@
 package com.techustle.afitest.exception
 
 enum class ExceptionType(var value: String) {
-    ENTITY_NOT_FOUND("not.found"), DUPLICATE_ENTITY("duplicate"), WRONG_CREDENTIAL("wrong.credentials"), ENTITY_EXCEPTION("exception");
+    ENTITY_NOT_FOUND("not.found"), DUPLICATE_ENTITY("duplicate"), WRONG_CREDENTIAL("wrong.credentials"), ENTITY_EXCEPTION("exception"), BAD_REQUEST("bad.request");
 
 }
