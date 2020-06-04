@@ -60,4 +60,8 @@ class EmployeeServiceImpl(@Autowired var employeeRepository: EmployeeRepository,
         throw ThrowCustomException.exception(EMPLOYEE, ENTITY_NOT_FOUND)
     }
 
+    override fun findEmployeeByRole(role: String): List<Employee> {
+        return  employeeRepository.findByRole(role)
+    }
+
 }

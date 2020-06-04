@@ -16,5 +16,7 @@ import javax.validation.constraints.Email
 @Repository
 interface  EmployeeRepository : JpaRepository<Employee, Long>{
     fun findByEmail(email: String):Optional<Employee>
+    fun findByRole(role: String):List<Employee>
+
 
 }

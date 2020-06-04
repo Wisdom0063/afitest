@@ -26,15 +26,15 @@ class Greeting(
 @RestController
 @RequestMapping("/api/v1/employees")
 class UserController(@Autowired private  val employeeService: EmployeeService) {
-    val counter = AtomicLong()
-    @GetMapping("")
-    fun getUsers(): Response<Greeting> {
-       return Response.ok<Greeting>().setResponsePayload(Greeting(counter.incrementAndGet(), "Wisdom"))
+    @GetMapping("/lawyers")
+    fun getUsers(): Response<List<Employee>> {
+        val lawyers : List<Employee> = employeeService.findEmployeeByRole("LAWYER")
+       return Response.ok<List<Employee>>().setResponsePayload(lawyers)
     }
 
     @PostMapping("")
     fun signup(  @RequestBody @Valid userData : AddEmployeePayload): Response<Any> {
-       var result = employeeService.signup(email =  userData.email, name = userData.name, password = userData.password, role = userData.role, rate=userData.rate)
+       var result = userData.password?.let { employeeService.signup(email =  userData.email, name = userData.name, password = it, role = userData.role, rate=userData.rate) }
         return   Response.ok<Any>().setResponsePayload(result)
 
     }

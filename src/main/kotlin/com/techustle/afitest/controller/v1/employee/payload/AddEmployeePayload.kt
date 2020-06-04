@@ -12,10 +12,12 @@ import javax.validation.constraints.Min
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.Size
 
- class AddEmployeePayload(@field:NotEmpty(message = "Password is required")
-                               @field: Size(min =6, message = "Password must be a minimum of 6 characters")
+ class AddEmployeePayload(
+//         @field:NotEmpty(
+//         message = "Password is required")
+//                               @field: Size(min =6, message = "Password must be a minimum of 6 characters")
 
-                             var password: String,
+                             var password: String?=null,
                           @field: NotEmpty(message = "name is required")
                               var name: String,
                           @field: Email(message = "Email is invalid")
@@ -27,9 +29,14 @@ import javax.validation.constraints.Size
                           var rate: Double? = null
  ) {
      init {
-         if(role=="LAWYER" && rate==null){
+         if (role == "LAWYER" && rate == null) {
              throw RuntimeException("Rate is required")
-         }
-     }
 
+         }
+
+         if (password == null) {
+            password="123456"
+         }
+
+     }
  }

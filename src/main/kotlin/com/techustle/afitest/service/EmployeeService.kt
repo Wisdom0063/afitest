@@ -41,4 +41,12 @@ interface EmployeeService {
      */
     fun findUserById(employeeid: Long): Employee // /**
 
+    /**
+     * get lawyers
+     *
+     * @param role
+     * @return
+     */
+    fun findEmployeeByRole(role: String): List<Employee> // /**
+
 }
