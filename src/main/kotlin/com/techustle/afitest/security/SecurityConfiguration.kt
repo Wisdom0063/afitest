@@ -1,6 +1,5 @@
 package  com.techustle.afitest.security
 
-//Store2Door packages
 
 import com.techustle.afitest.repository.EmployeeRepository
 import org.springframework.boot.configurationprocessor.json.JSONException

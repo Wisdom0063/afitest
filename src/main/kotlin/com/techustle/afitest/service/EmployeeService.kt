@@ -39,7 +39,7 @@ interface EmployeeService {
      * @param employeeid
      * @return
      */
-    fun findUserById(employeeid: Long): Employee // /**
+    fun findUserById(employeeId: Long): Employee // /**
 
     /**
      * get lawyers

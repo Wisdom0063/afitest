@@ -24,7 +24,7 @@ class EmployeeServiceImpl(@Autowired var employeeRepository: EmployeeRepository,
 
     override fun signup(email: String, name:String, password:String, role:String, rate:Double?): Employee {
         var existingEmployee = employeeRepository.findByEmail(email)
-        if(existingEmployee != null && existingEmployee.isPresent){
+        if(existingEmployee.isPresent){
             throw  ThrowCustomException.exception(EMPLOYEE, DUPLICATE_ENTITY, email)
         }
         var employee = Employee(email = email, name =name, password = password, role = role)
@@ -44,7 +44,7 @@ class EmployeeServiceImpl(@Autowired var employeeRepository: EmployeeRepository,
 
     override fun findUserByEmail(email: String): Employee {
             var optionalEmployee = employeeRepository.findByEmail(email)
-        if(optionalEmployee !=null && optionalEmployee.isPresent){
+        if( optionalEmployee.isPresent){
             return optionalEmployee.get()
         }
 
@@ -53,7 +53,7 @@ class EmployeeServiceImpl(@Autowired var employeeRepository: EmployeeRepository,
 
     override fun findUserById(employeeId: Long): Employee {
         var optionalEmployee = employeeRepository.findById(employeeId)
-        if(optionalEmployee !=null && optionalEmployee.isPresent){
+        if(optionalEmployee.isPresent){
             return optionalEmployee.get()
         }
 
@@ -66,7 +66,7 @@ class EmployeeServiceImpl(@Autowired var employeeRepository: EmployeeRepository,
 
     override fun login(email: String, password: String): Employee {
         var optionalEmployee = employeeRepository.findByEmail(email)
-        if(optionalEmployee !=null && optionalEmployee.isPresent){
+        if(optionalEmployee.isPresent){
             val employee = optionalEmployee.get()
          val matches: Boolean =   passwordEncoder.matches(password, employee.password)
             if(matches){

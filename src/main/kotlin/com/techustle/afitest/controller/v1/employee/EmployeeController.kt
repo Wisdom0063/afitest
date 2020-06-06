@@ -59,6 +59,11 @@ class UserController(@Autowired private  val employeeService: EmployeeService, @
 
     }
 
+    @GetMapping("/try")
+    fun tryy(): String {
+        return   "fdfdfjjff"
+
+    }
 
 
 

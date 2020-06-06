@@ -24,5 +24,8 @@ interface  ScheduleService{
     fun getAllSchedules():List<Schedule>
     fun getEmployeeSchedules(employeeId: Long):List<Schedule>
     fun generateEmployeeTimeTable(employeeId: Long):List<TimetableDto>
+    /**
+     * 
+     */
     fun generateCompanyInvoice(projectId:Long): List<InvoiceDto>
 }

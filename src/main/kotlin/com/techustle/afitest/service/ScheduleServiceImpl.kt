@@ -4,7 +4,7 @@
  * @Last Modified by:   Wisdom Kwarteng 
  * @Last Modified time: 2020-06-01 13:06:21 
  */
-package  com.techustle.afitest.service
+package com.techustle.afitest.service
 
 import com.techustle.afitest.dto.model.InvoiceDto
 import com.techustle.afitest.dto.model.TimetableDto
@@ -14,19 +14,21 @@ import com.techustle.afitest.model.Project
 import com.techustle.afitest.model.Schedule
 import com.techustle.afitest.repository.BillableRateRepository
 import com.techustle.afitest.repository.ScheduleRepository
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.ArrayList
-
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 
 @Service
-class ScheduleServiceImpl(@Autowired private val scheduleRepository: ScheduleRepository, @Autowired private val projectService: ProjectService,
-                          @Autowired private val employeeService: EmployeeService,
-                          @Autowired private val billableRateRepository: BillableRateRepository) : ScheduleService {
+class ScheduleServiceImpl(
+    @Autowired private val scheduleRepository: ScheduleRepository,
+    @Autowired private val projectService: ProjectService,
+    @Autowired private val employeeService: EmployeeService,
+    @Autowired private val billableRateRepository: BillableRateRepository
+) : ScheduleService {
     /**
      *
      */
@@ -40,7 +42,6 @@ class ScheduleServiceImpl(@Autowired private val scheduleRepository: ScheduleRep
         firstDayOfWeekCal[Calendar.HOUR_OF_DAY] = 0 // ! clear would not reset the hour of day !
         lastDayOfWeekCal[Calendar.HOUR_OF_DAY] = 0 // ! clear would not reset the hour of day !
 
-
         firstDayOfWeekCal.clear(Calendar.MINUTE)
         lastDayOfWeekCal.clear(Calendar.MINUTE)
 
@@ -50,13 +51,12 @@ class ScheduleServiceImpl(@Autowired private val scheduleRepository: ScheduleRep
         firstDayOfWeekCal.clear(Calendar.MILLISECOND)
         lastDayOfWeekCal.clear(Calendar.MILLISECOND)
 
-
 // get start of this week in milliseconds
 
         firstDayOfWeekCal[Calendar.DAY_OF_WEEK] = firstDayOfWeekCal.firstDayOfWeek
         lastDayOfWeekCal[Calendar.DAY_OF_WEEK] = lastDayOfWeekCal.firstDayOfWeek + 6
 
-        var formatter: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd");
+        var formatter: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
         val startDate = formatter.format(Date(firstDayOfWeekCal.timeInMillis))
         val endDate = formatter.format(Date(lastDayOfWeekCal.timeInMillis))
 
@@ -71,34 +71,29 @@ class ScheduleServiceImpl(@Autowired private val scheduleRepository: ScheduleRep
                 val employee = employeeService.findUserById(employeeId)
                 val rate = billableRateRepository.findByEmployee(employee)
                 if (!rate.isPresent) {
-                    throw  ThrowCustomException.exception(ExceptionType.BAD_REQUEST, "${employee.name} has no billable rate")
+                    throw ThrowCustomException.exception(ExceptionType.BAD_REQUEST, "${employee.name} has no billable rate")
                 }
 
                 val employeeSchedules = scheduleRepository.findSchedulesByEmployeeIdAndDate(employeeId, startTime.toLocalDate())
                 for (schedule in employeeSchedules) {
                     if (schedule.startTime.isBefore(startTime.toLocalTime()) && schedule.endTime.isAfter(startTime.toLocalTime()) || schedule.startTime.isBefore(endTime.toLocalTime()) && schedule.endTime.isAfter(endTime.toLocalTime()) ||
-                            (!schedule.startTime.isBefore(startTime.toLocalTime()) && !schedule.startTime.isAfter(startTime.toLocalTime()) && !schedule.endTime.isBefore(endTime.toLocalTime()) && !schedule.endTime.isAfter(endTime.toLocalTime()))
-                            || (schedule.startTime.isAfter(startTime.toLocalTime()) && schedule.endTime.isBefore(endTime.toLocalTime()))
+                            (!schedule.startTime.isBefore(startTime.toLocalTime()) && !schedule.startTime.isAfter(startTime.toLocalTime()) && !schedule.endTime.isBefore(endTime.toLocalTime()) && !schedule.endTime.isAfter(endTime.toLocalTime())) ||
+                            (schedule.startTime.isAfter(startTime.toLocalTime()) && schedule.endTime.isBefore(endTime.toLocalTime()))
                     ) {
-                        throw  ThrowCustomException.exception(ExceptionType.BAD_REQUEST, "${employee.name} is not available within this time")
-
+                        throw ThrowCustomException.exception(ExceptionType.BAD_REQUEST, "${employee.name} is not available within this time")
                     }
-
                 }
 
-                //Add more checks like compared date
+                // Add more checks like compared date
 
                 val schedule = Schedule(employee = employee, project = project, billableRate = rate.get(), startTime = startTime.toLocalTime(), endTime = endTime.toLocalTime(), date = startTime.toLocalDate())
                 return scheduleRepository.save(schedule)
-
             } else {
-                throw  ThrowCustomException.exception(ExceptionType.BAD_REQUEST, "Make sure end time is ahead of start time")
-
+                throw ThrowCustomException.exception(ExceptionType.BAD_REQUEST, "Make sure end time is ahead of start time")
             }
         } else {
-            throw  ThrowCustomException.exception(ExceptionType.BAD_REQUEST, "Make sure start and end time falls within this week")
+            throw ThrowCustomException.exception(ExceptionType.BAD_REQUEST, "Make sure start and end time falls within this week")
         }
-
     }
 
     /**
@@ -138,7 +133,7 @@ class ScheduleServiceImpl(@Autowired private val scheduleRepository: ScheduleRep
 
         cal[Calendar.DAY_OF_WEEK] = cal.firstDayOfWeek
 
-        var formatter: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd");
+        var formatter: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
         var datefor = formatter.format(Date(cal.timeInMillis))
         val date: LocalDate = LocalDate.parse(datefor)
 
@@ -147,7 +142,6 @@ class ScheduleServiceImpl(@Autowired private val scheduleRepository: ScheduleRep
         for (schedule in schedules) {
             val timetableDto = TimetableDto(employeeId = schedule.employee.id, rate = schedule.billableRate.rate, project = schedule.project.name, date = schedule.date, startTime = schedule.startTime, endTime = schedule.endTime)
             timetable.add(timetableDto)
-
         }
 
         return timetable
@@ -168,10 +162,7 @@ class ScheduleServiceImpl(@Autowired private val scheduleRepository: ScheduleRep
 
             var invoiceDto = InvoiceDto(employeeId = schedule.employee.id, numberOfHours = totalHours, unitPrice = unitPrice, cost = cost)
             invoice.add(invoiceDto)
-
         }
         return invoice
     }
-
-
 }

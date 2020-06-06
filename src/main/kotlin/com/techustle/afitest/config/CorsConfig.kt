@@ -3,7 +3,7 @@
  * @Date: 2020-03-19 10:24:30
  * @Last Modified by: Wisdom Kwarteng
  * @Last Modified time: 2020-03-26 19:00:37
- * Desc: Bean configuration for store2Door
+ * Desc: Cors Bean configuration for affitest
  */
 package com.techustle.afitest.config
 

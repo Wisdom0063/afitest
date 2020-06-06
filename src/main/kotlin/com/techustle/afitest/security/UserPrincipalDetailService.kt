@@ -1,6 +1,5 @@
 
 package com.techustle.afitest.security
-//Store2Door packages
 
 import com.techustle.afitest.model.Employee
 import com.techustle.afitest.repository.EmployeeRepository

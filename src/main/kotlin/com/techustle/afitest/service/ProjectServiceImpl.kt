@@ -22,7 +22,7 @@ class  ProjectServiceImpl(@Autowired private  val projectRepository: ProjectRepo
 
     override fun getProjectById(projectId: Long): Project {
         val optionalProject = projectRepository.findById(projectId)
-        if(optionalProject != null && optionalProject.isPresent){
+        if(optionalProject.isPresent){
             return  optionalProject.get()
 
         }else{
