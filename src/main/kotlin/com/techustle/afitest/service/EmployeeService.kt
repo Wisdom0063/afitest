@@ -22,7 +22,7 @@ interface EmployeeService {
      * @param User
      * @return
      */
-    fun signup(email: String, name:String, password:String, role:String, rate:Double?): Employee?
+    fun signup(email: String, name:String, password:String, role:String, rate:Double?): Employee
 
     /**
      * Search an existing employee by email
@@ -48,5 +48,7 @@ interface EmployeeService {
      * @return
      */
     fun findEmployeeByRole(role: String): List<Employee> // /**
+
+    fun login(email: String, password: String):Employee
 
 }
