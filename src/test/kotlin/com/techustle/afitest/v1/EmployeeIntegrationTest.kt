@@ -1,14 +1,14 @@
 package com.techustle.afitest.v1
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.techustle.afitest.controller.v1.employee.payload.AddFinancePayload
 import com.techustle.afitest.controller.v1.employee.payload.AddLawyerPayload
 import com.techustle.afitest.dto.model.EmployeeDto
 import com.techustle.afitest.utils.CreateUrlWithPort
+import com.techustle.afitest.utils.getAddFinanceMemberPayload
 import com.techustle.afitest.utils.getAddLawyerPayload
 import com.techustle.afitest.utils.responseType
 import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -17,7 +17,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.http.*
 import org.springframework.test.context.ActiveProfiles
-import javax.validation.constraints.AssertTrue
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -34,7 +33,6 @@ class AuthIntegrationTest {
 
 
     @Test
-    @DisplayName("It should successfully signup a user")
     @Throws(Exception::class)
     fun `It should successfully add a lawyer`() {
         val addLawyerPayload = getAddLawyerPayload()
@@ -50,6 +48,29 @@ class AuthIntegrationTest {
         val actual = response.statusCode
         assertTrue(actual.is2xxSuccessful);
         assertTrue(userDto.name== addLawyerPayload.name)
+        assertTrue(userDto.email== addLawyerPayload.email)
+        assertTrue(userDto.role== "LAWYER")
+
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun `It should successfully add a finance team member`() {
+        val addFinancePayload = getAddFinanceMemberPayload()
+        val entity: HttpEntity<AddFinancePayload> = HttpEntity<AddFinancePayload>(addFinancePayload,
+                headers)
+
+        val response = restTemplate.exchange(CreateUrlWithPort.create("/api/v1/employees/finance", port),
+                HttpMethod.POST, entity, responseType)
+        val user = response.body?.get("payload")
+        val mapper = ObjectMapper()
+        val userDto: EmployeeDto = mapper.convertValue(user, EmployeeDto::class.java)
+        val actual = response.statusCode
+        assertTrue(actual.is2xxSuccessful);
+        assertTrue(userDto.name== addFinancePayload.name)
+        assertTrue(userDto.email== addFinancePayload.email)
+        assertTrue(userDto.role== "FINANCE")
+
     }
 
     companion object {
