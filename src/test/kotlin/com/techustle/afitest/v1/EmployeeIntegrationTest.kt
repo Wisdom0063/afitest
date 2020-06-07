@@ -3,13 +3,12 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.techustle.afitest.controller.v1.employee.payload.AddFinancePayload
 import com.techustle.afitest.controller.v1.employee.payload.AddLawyerPayload
 import com.techustle.afitest.dto.model.EmployeeDto
-import com.techustle.afitest.utils.CreateUrlWithPort
-import com.techustle.afitest.utils.getAddFinanceMemberPayload
-import com.techustle.afitest.utils.getAddLawyerPayload
-import com.techustle.afitest.utils.responseType
+import com.techustle.afitest.utils.*
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment
@@ -21,6 +20,7 @@ import org.springframework.test.context.ActiveProfiles
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AuthIntegrationTest {
     // bind the above RANDOM_PORT
     @LocalServerPort
@@ -30,6 +30,12 @@ class AuthIntegrationTest {
    private val restTemplate  = TestRestTemplate()
 
     var headers = HttpHeaders()
+
+    @BeforeAll
+    fun setup() {
+        headers.setBearerAuth(generateToken("finance@gmail.com"))
+
+    }
 
 
     @Test
@@ -49,6 +55,24 @@ class AuthIntegrationTest {
         assertTrue(userDto.name== addLawyerPayload.name)
         assertTrue(userDto.email== addLawyerPayload.email)
         assertTrue(userDto.role== "LAWYER")
+
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun `It should return access denied error if token is not provided`() {
+
+        var noTokenHeaders = HttpHeaders()
+
+        var payload :  Map<String, Any> = HashMap<String, Any>()
+        payload.plus(Pair("name", "Test name")).plus(Pair("rate", 50.0)).plus(Pair("password", "123456"))
+        val entity: HttpEntity<Map<String, Any>> = HttpEntity<Map<String, Any>>(payload,
+                noTokenHeaders)
+
+        val response = restTemplate.exchange(CreateUrlWithPort.create("/api/v1/employees/law", port),
+                HttpMethod.POST, entity, responseType)
+        val actual = response.statusCode
+        assertTrue(actual.is4xxClientError);
 
     }
 
@@ -166,10 +190,4 @@ class AuthIntegrationTest {
 
     }
 
-    companion object {
-        @AfterAll
-        fun deleteUser() {
-           println("Done testinggggggggggggggggggggggggg. Hope you are fineeeeeeeeeeeeeeeeeeeeeeeee")
-        }
-    }
 }

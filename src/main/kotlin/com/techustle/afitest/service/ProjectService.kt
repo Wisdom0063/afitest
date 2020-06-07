@@ -9,5 +9,5 @@ interface  ProjectService {
     fun addProject(name:String):Project
     fun getAllProject():List<Project>
     fun getProjectById(projectId:Long):Project
-    fun ensureProjectByName(name:String):Project
+    fun ensureProjectByName(name:String)
 }

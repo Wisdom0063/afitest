@@ -5,6 +5,7 @@ import com.techustle.afitest.repository.EmployeeRepository
 import org.springframework.boot.configurationprocessor.json.JSONException
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -40,7 +41,7 @@ class SecurityConfiguration(private val userPrincipalDetailsService: UserPrincip
                                                                                       authenticationException: AuthenticationException? -> AccessForbiddenHandler.handleExeception(request,
                         response, authenticationException) }.and() // add jwt filters
                 .addFilter(JwtAuthorizationFilter(authenticationManager(), employeeRepository)).authorizeRequests() // configure access rules
-                .antMatchers("/api/v1/auth/**").permitAll().antMatchers("/api/v1/employees/**").permitAll().antMatchers("/").permitAll().antMatchers("/main.js").permitAll().antMatchers("/printthis.js").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/v1/auth/login").permitAll().antMatchers(HttpMethod.GET,"/").permitAll().antMatchers(HttpMethod.GET,"/login").permitAll().antMatchers(HttpMethod.GET,"/main.js").permitAll().antMatchers(HttpMethod.GET,"/printthis.js").permitAll()
                 .anyRequest().authenticated()
     }
 

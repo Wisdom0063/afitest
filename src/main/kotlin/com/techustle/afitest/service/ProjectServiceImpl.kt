@@ -13,7 +13,7 @@ import com.techustle.afitest.exception.ThrowCustomException
 @Service
 class  ProjectServiceImpl(@Autowired private  val projectRepository: ProjectRepository):ProjectService{
     override fun addProject(name: String): Project {
-        ensureProjectByName(name)
+        this.ensureProjectByName(name)
         var project:Project = Project(name = name)
        return projectRepository.save(project)
     }
@@ -32,15 +32,10 @@ class  ProjectServiceImpl(@Autowired private  val projectRepository: ProjectRepo
         }
     }
 
-    override fun ensureProjectByName(name: String): Project {
+    override fun ensureProjectByName(name: String) {
         val optionalProject = projectRepository.findByName(name)
         if(optionalProject.isPresent){
-            throw ThrowCustomException.exception(DUPLICATE_ENTITY, "project with name $name already exist");
-
-
-        }else{
-            return  optionalProject.get()
-
+            throw ThrowCustomException.exception(DUPLICATE_ENTITY, "project with name  already exist");
         }
     }
 
