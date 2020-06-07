@@ -12,9 +12,21 @@ This is the Affitest API description and how to run the application
 * 	[Thymeleaf](https://www.thymeleaf.org/) - Modern server-side Java template engine for both web and standalone environments.
 
 
-## Running the application locally
-You can run the application either using an in-memory database or an actual database
-For easy access,  the application uses an in-memory by default. To change this behaviour provide the mysql database credentials in /src/main/resources/applicaton-dev.properties
+## Worth Taking Note
+
+* The frontend of the application is built with react which depends on node and npm. So for easy access without installing node and npm, the frontend is bundled and being served by the api. `https://github.com/Wisdom0063/afitest-web` is the frontend repo url
+* The application uses Mysql database and for easy access, an in-memory database is used. You can change this behaviour by providing the mysql database credentials in /src/main/resources/applicaton-dev.properties
+* A default finace team member with email `finance@gmail.com` and password `123456` is created on application start
+* Request validation is done at the API level
+* API is versioned and version one base path `http://localhost:8080/api/v1`
+* The frontend base path is `http://localhost:8080`
+* A user is either a finance team member or a lawyer
+* A finance team member adds a lawyer to the application and a default password `123456` is generated for them
+
+
+
+## Running the application locally 
+
 To run the application cd into the root directory and use the [Spring Boot Maven plugin](https://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins-maven-plugin.html) to run the command below:
 ### For In-memory
 ./mvnw spring-boot:run
@@ -23,11 +35,6 @@ To run the application cd into the root directory and use the [Spring Boot Maven
 
 
 
-
-
-## Documentation
-
-* [API documentation](https://documenter.getpostman.com/view/10234227/SzRyy9K5?version=latest) - online, with code auto-generated snippets in cURL, jQuery, Java, Swift, Objective-C, Shell Ruby,Python Requests, Node, PHP and Go programming languages
 
 
 ## Files and Directories
@@ -88,6 +95,8 @@ The project (a.k.a. project directory) has a particular directory structure. A r
 - `resources/application-dev.properties` - Contains application properties when using an actual database
 - `resources/application-test.properties` - Contains application properties when using an in-memory database and also use for testing
 - `resources/error.properties` - It contains templates for error messages.
+- `resources/static/main.js` - Reactjs static file compiled and transpiled with webpack
+- `resources/template/index.html` - The root html file that loads the main.js file
 - `resources/notification.properties` - It contains templates for notification messages.
 
 - `test/` - contains unit and integration tests
