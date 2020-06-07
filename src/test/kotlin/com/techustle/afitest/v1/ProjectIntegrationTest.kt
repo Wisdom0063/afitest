@@ -51,13 +51,8 @@ class ProjectIntegrationTest {
                 headers)
         val response = restTemplate.exchange(CreateUrlWithPort.create("/api/v1/projects", port),
                 HttpMethod.POST, entity, responseType)
-        println("resss is ${response.body}")
-//       val project = response.body?.get("payload")
-//        val mapper = ObjectMapper()
-//        val projectData: Project = mapper.convertValue(project, Project::class.java)
         val actual = response.statusCode
         assertTrue(actual.is2xxSuccessful);
-//        assertTrue(projectData.name== addProjectPayload.name)
     }
 
 

@@ -8,6 +8,7 @@ package com.techustle.afitest.service
 
 
 import com.techustle.afitest.model.Employee
+import com.techustle.afitest.model.Role
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -22,7 +23,7 @@ interface EmployeeService {
      * @param User
      * @return
      */
-    fun signup(email: String, name:String, password:String, role:String, rate:Double?): Employee
+    fun signup(email: String, name:String, password:String, role:Role, rate:Double?): Employee
 
     /**
      * Search an existing employee by email

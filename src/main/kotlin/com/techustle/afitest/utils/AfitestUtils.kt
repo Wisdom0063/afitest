@@ -1,6 +1,7 @@
 package  com.techustle.afitest.utils
 
 import com.techustle.afitest.model.Employee
+import com.techustle.afitest.model.Role
 import com.techustle.afitest.repository.EmployeeRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -79,7 +80,7 @@ class FinanceSeed(@Autowired private  val  employeeRepository: EmployeeRepositor
     val optionaLEmployee = employeeRepository.findByEmail("finance@gmail.com")
 
         if(!optionaLEmployee.isPresent){
-            val employee = Employee(name = "Finance Test", email = "finance@gmail.com", role = "FINANCE",  password = passwordEncoder.encode("123456"))
+            val employee = Employee(name = "Finance Test", email = "finance@gmail.com", role = Role.FINANCE,  password = passwordEncoder.encode("123456"))
             employeeRepository.save(employee)
         }
     }

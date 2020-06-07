@@ -6,6 +6,11 @@ import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 
 
+enum class Role {
+        FINANCE,
+        LAWYER,
+}
+
 @Entity(name = "employees")
 data class Employee(
         @Id
@@ -19,7 +24,7 @@ data class Employee(
         val email : String="",
         @Column(nullable=false)
         val password: String="",
-        val role:String=""
+        val role:Role=Role.LAWYER
 ){
 
 }

@@ -34,6 +34,10 @@ To run the application cd into the root directory and use the [Spring Boot Maven
 ### For actual database
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 
+## Running Test
+* Cd into the root directory
+* ./mvnw test
+
 
 ## Documentation
 

@@ -12,6 +12,7 @@ import com.techustle.afitest.dto.mapper.EmployeeMapper
 import com.techustle.afitest.dto.model.EmployeeDto
 import com.techustle.afitest.dto.response.Response
 import com.techustle.afitest.model.Employee
+import com.techustle.afitest.model.Role
 import com.techustle.afitest.service.EmployeeService
 import javax.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
@@ -41,18 +42,14 @@ class UserController(@Autowired private val employeeService: EmployeeService, @A
 
     @PostMapping("/law")
     fun addLawyer(@RequestBody @Valid userData: AddLawyerPayload): Response<EmployeeDto> {
-       var result = employeeService.signup(email = userData.email, name = userData.name, password = passwordEncoder.encode("123456"), role = "LAWYER", rate = userData.rate)
+       var result = employeeService.signup(email = userData.email, name = userData.name, password = passwordEncoder.encode("123456"), role = Role.LAWYER, rate = userData.rate)
         return Response.ok<EmployeeDto>().setResponsePayload(employeeMapper.toEmployeeDto(result))
     }
 
     @PostMapping("/finance")
     fun addFinanceMember(@RequestBody @Valid userData: AddFinancePayload): Response<EmployeeDto> {
-        var result = employeeService.signup(email = userData.email, name = userData.name, password = passwordEncoder.encode(userData.password), role = "FINANCE", rate = null)
+        var result = employeeService.signup(email = userData.email, name = userData.name, password = passwordEncoder.encode(userData.password), role = Role.FINANCE, rate = null)
         return Response.ok<EmployeeDto>().setResponsePayload(employeeMapper.toEmployeeDto(result))
     }
 
-    @GetMapping("/try")
-    fun tryy(): String {
-        return "fdfdfjjff"
-    }
 }

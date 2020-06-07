@@ -47,7 +47,7 @@ class SecurityConfiguration(private val userPrincipalDetailsService: UserPrincip
                         response, accessDeniedException) }.authenticationEntryPoint { request: HttpServletRequest, response: HttpServletResponse,
                                                                                       authenticationException: AuthenticationException? -> AccessForbiddenHandler.handleExeception(request,
                         response, authenticationException) }.and() // add jwt filters
-                .addFilter(JwtAuthorizationFilter(authenticationManager(), employeeRepository)).authorizeRequests() // configure access rules
+                .addFilter(JwtAuthorizationFilter(authenticationManager(), employeeRepository)).authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/employees/**").hasRole("FINANCE") // configure access rules
                 .antMatchers(HttpMethod.POST,"/api/v1/auth/login").permitAll().antMatchers(HttpMethod.GET,"/").permitAll().antMatchers(HttpMethod.GET,"/login").permitAll().antMatchers(HttpMethod.GET,"/main.js").permitAll().antMatchers(HttpMethod.GET,"/printthis.js").permitAll()
                 .anyRequest().authenticated()
     }

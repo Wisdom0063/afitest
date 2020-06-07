@@ -3,6 +3,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.techustle.afitest.controller.v1.employee.payload.AddFinancePayload
 import com.techustle.afitest.controller.v1.employee.payload.AddLawyerPayload
 import com.techustle.afitest.dto.model.EmployeeDto
+import com.techustle.afitest.model.Role
 import com.techustle.afitest.utils.*
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -42,6 +43,7 @@ class AuthIntegrationTest {
     @Throws(Exception::class)
     fun `It should successfully add a lawyer`() {
         val addLawyerPayload = getAddLawyerPayload()
+        headers.setBearerAuth(generateToken("finance@gmail.com"))
         val entity: HttpEntity<AddLawyerPayload> = HttpEntity<AddLawyerPayload>(addLawyerPayload,
                 headers)
 
@@ -54,7 +56,7 @@ class AuthIntegrationTest {
         assertTrue(actual.is2xxSuccessful);
         assertTrue(userDto.name== addLawyerPayload.name)
         assertTrue(userDto.email== addLawyerPayload.email)
-        assertTrue(userDto.role== "LAWYER")
+        assertTrue(userDto.role== Role.LAWYER)
 
     }
 
@@ -73,8 +75,10 @@ class AuthIntegrationTest {
                 HttpMethod.POST, entity, responseType)
         val actual = response.statusCode
         assertTrue(actual.is4xxClientError);
+        assertTrue(response.statusCodeValue==403)
 
     }
+
 
     @Test
     @Throws(Exception::class)
@@ -125,6 +129,7 @@ class AuthIntegrationTest {
     @Throws(Exception::class)
     fun `It should successfully add a finance team member`() {
         val addFinancePayload = getAddFinanceMemberPayload()
+        headers.setBearerAuth(generateToken("finance@gmail.com"))
         val entity: HttpEntity<AddFinancePayload> = HttpEntity<AddFinancePayload>(addFinancePayload,
                 headers)
 
@@ -137,7 +142,7 @@ class AuthIntegrationTest {
         assertTrue(actual.is2xxSuccessful);
         assertTrue(userDto.name== addFinancePayload.name)
         assertTrue(userDto.email== addFinancePayload.email)
-        assertTrue(userDto.role== "FINANCE")
+        assertTrue(userDto.role== Role.FINANCE)
 
     }
 

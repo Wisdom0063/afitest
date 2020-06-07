@@ -11,6 +11,7 @@ import com.techustle.afitest.exception.ExceptionType.*
 import com.techustle.afitest.exception.ThrowCustomException
 import com.techustle.afitest.model.BillableRate
 import com.techustle.afitest.model.Employee
+import com.techustle.afitest.model.Role
 import com.techustle.afitest.repository.BillableRateRepository
 import com.techustle.afitest.repository.EmployeeRepository
 import java.util.*
@@ -26,7 +27,7 @@ class EmployeeServiceImpl(@Autowired var employeeRepository: EmployeeRepository,
   * <p>Check if user is lawyer and adds his/her billable rate</p>
 
  */
-    override fun signup(email: String, name: String, password: String, role: String, rate: Double?): Employee {
+    override fun signup(email: String, name: String, password: String, role: Role, rate: Double?): Employee {
         var existingEmployee = employeeRepository.findByEmail(email)
         if (existingEmployee.isPresent) {
             throw ThrowCustomException.exception(EMPLOYEE, DUPLICATE_ENTITY, email)
@@ -35,7 +36,7 @@ class EmployeeServiceImpl(@Autowired var employeeRepository: EmployeeRepository,
 
         val result = employeeRepository.save(employee)
 
-        if (role == "LAWYER") {
+        if (role == Role.LAWYER) {
             val billableRate = BillableRate(employee = result, rate = rate as Double)
             billableRateRepository.save(billableRate)
         }
