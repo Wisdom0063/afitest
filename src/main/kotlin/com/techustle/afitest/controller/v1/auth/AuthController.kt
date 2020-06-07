@@ -27,7 +27,7 @@ class  AuthController(@Autowired private val employeeService: EmployeeService, @
         val token: String = JWT.create().withSubject(loginData.email)
                 .withExpiresAt(Date(System.currentTimeMillis() + (10 * 24 * 60 * 60000)))
                 .sign(HMAC512("SomeSecretForJWTGeneration"));
-      var  employeeDto :EmployeeDto = employeeMapper.toUserDto(employee)
+      var  employeeDto :EmployeeDto = employeeMapper.toEmployeeDto(employee)
         employeeDto.token = token
         return  Response.ok<EmployeeDto>().setResponsePayload(employeeDto)
 

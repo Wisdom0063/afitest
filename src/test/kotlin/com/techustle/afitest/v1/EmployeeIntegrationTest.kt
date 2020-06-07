@@ -44,13 +44,57 @@ class AuthIntegrationTest {
         val user = response.body?.get("payload")
        val mapper = ObjectMapper()
        val userDto: EmployeeDto = mapper.convertValue(user, EmployeeDto::class.java)
-        println(userDto.name)
         val actual = response.statusCode
         assertTrue(actual.is2xxSuccessful);
         assertTrue(userDto.name== addLawyerPayload.name)
         assertTrue(userDto.email== addLawyerPayload.email)
         assertTrue(userDto.role== "LAWYER")
 
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun `It should return an bad request error if lawyers email is not provided`() {
+      var payload :  Map<String, Any> = HashMap<String, Any>()
+        payload.plus(Pair("name", "Test name")).plus(Pair("rate", 50.0))
+        val entity: HttpEntity<Map<String, Any>> = HttpEntity<Map<String, Any>>(payload,
+                headers)
+
+        val response = restTemplate.exchange(CreateUrlWithPort.create("/api/v1/employees/law", port),
+                HttpMethod.POST, entity, responseType)
+
+        val actual = response.statusCode
+        assertTrue(actual.is4xxClientError);
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun `It should return an bad request error if lawyer's name is not provided`() {
+        var payload :  Map<String, Any> = HashMap<String, Any>()
+        payload.plus(Pair("email", "example@gmail.com")).plus(Pair("rate", 50.0))
+        val entity: HttpEntity<Map<String, Any>> = HttpEntity<Map<String, Any>>(payload,
+                headers)
+
+        val response = restTemplate.exchange(CreateUrlWithPort.create("/api/v1/employees/law", port),
+                HttpMethod.POST, entity, responseType)
+
+        val actual = response.statusCode
+        assertTrue(actual.is4xxClientError);
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun `It should return an bad request error if lawyers rate is not provided`() {
+        var payload :  Map<String, Any> = HashMap<String, Any>()
+        payload.plus(Pair("email", "example@gmail.com")).plus(Pair("name", "test name"))
+        val entity: HttpEntity<Map<String, Any>> = HttpEntity<Map<String, Any>>(payload,
+                headers)
+
+        val response = restTemplate.exchange(CreateUrlWithPort.create("/api/v1/employees/law", port),
+                HttpMethod.POST, entity, responseType)
+
+        val actual = response.statusCode
+        assertTrue(actual.is4xxClientError);
     }
 
     @Test
@@ -70,6 +114,55 @@ class AuthIntegrationTest {
         assertTrue(userDto.name== addFinancePayload.name)
         assertTrue(userDto.email== addFinancePayload.email)
         assertTrue(userDto.role== "FINANCE")
+
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun `It should return an bad request error if finance member password is not provided`() {
+        var payload :  Map<String, Any> = HashMap<String, Any>()
+        payload.plus(Pair("email", "example@gmail.com")).plus(Pair("name", "test name"))
+        val entity: HttpEntity<Map<String, Any>> = HttpEntity<Map<String, Any>>(payload,
+                headers)
+
+        val response = restTemplate.exchange(CreateUrlWithPort.create("/api/v1/employees/law", port),
+                HttpMethod.POST, entity, responseType)
+
+        val actual = response.statusCode
+        assertTrue(actual.is4xxClientError);
+
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun `It should return an bad request error if finance member name is not provided`() {
+        var payload :  Map<String, Any> = HashMap<String, Any>()
+        payload.plus(Pair("email", "example@gmail.com")).plus(Pair("password", "testpassword"))
+        val entity: HttpEntity<Map<String, Any>> = HttpEntity<Map<String, Any>>(payload,
+                headers)
+
+        val response = restTemplate.exchange(CreateUrlWithPort.create("/api/v1/employees/law", port),
+                HttpMethod.POST, entity, responseType)
+
+        val actual = response.statusCode
+        assertTrue(actual.is4xxClientError);
+
+    }
+
+
+    @Test
+    @Throws(Exception::class)
+    fun `It should return an bad request error if finance member email is not provided`() {
+        var payload :  Map<String, Any> = HashMap<String, Any>()
+        payload.plus(Pair("name", "test name")).plus(Pair("password", "testpassword"))
+        val entity: HttpEntity<Map<String, Any>> = HttpEntity<Map<String, Any>>(payload,
+                headers)
+
+        val response = restTemplate.exchange(CreateUrlWithPort.create("/api/v1/employees/law", port),
+                HttpMethod.POST, entity, responseType)
+
+        val actual = response.statusCode
+        assertTrue(actual.is4xxClientError);
 
     }
 

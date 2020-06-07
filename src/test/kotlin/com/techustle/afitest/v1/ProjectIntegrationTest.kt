@@ -4,10 +4,10 @@ import com.techustle.afitest.controller.v1.employee.payload.AddLawyerPayload
 import com.techustle.afitest.controller.v1.project.payload.AddProjectPayload
 import com.techustle.afitest.model.Project
 import com.techustle.afitest.utils.*
-import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -18,12 +18,12 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.test.context.ActiveProfiles
-import java.util.*
-import kotlin.collections.ArrayList
+
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ProjectIntegrationTest {
     // bind the above RANDOM_PORT
     @LocalServerPort
@@ -34,7 +34,18 @@ class ProjectIntegrationTest {
 
     var headers = HttpHeaders()
 
+        @BeforeAll
+        fun setup() {
+            val addLawyerPayload = getAddLawyerPayload()
+            addLawyerPayload.email = "test@gmail.com"
+            val entityLaw: HttpEntity<AddLawyerPayload> = HttpEntity<AddLawyerPayload>(addLawyerPayload,
+                    headers)
 
+            val responseLaw = restTemplate.exchange(CreateUrlWithPort.create("/api/v1/employees/law", port),
+                    HttpMethod.POST, entityLaw, responseType)
+            headers.setBearerAuth(generateToken("test@gmail.com"))
+
+        }
 
 
 
@@ -42,13 +53,6 @@ class ProjectIntegrationTest {
     @Test
     @Throws(Exception::class)
     fun `It should successfully add a project`() {
-        val addLawyerPayload = getAddLawyerPayload()
-        val entityLaw: HttpEntity<AddLawyerPayload> = HttpEntity<AddLawyerPayload>(addLawyerPayload,
-                headers)
-
-        val responseLaw = restTemplate.exchange(CreateUrlWithPort.create("/api/v1/employees/law", port),
-                HttpMethod.POST, entityLaw, responseType)
-        headers.setBearerAuth(generateToken(addLawyerPayload.email))
         val addProjectPayload = getAddProjectPayload()
         val entity: HttpEntity<AddProjectPayload> = HttpEntity<AddProjectPayload>(addProjectPayload,
                 headers)
@@ -67,38 +71,16 @@ class ProjectIntegrationTest {
     @Test
     @Throws(Exception::class)
     fun `It should successfully get get list of products`() {
-        val addLawyerPayload = getAddLawyerPayload()
-        val entityLaw: HttpEntity<AddLawyerPayload> = HttpEntity<AddLawyerPayload>(addLawyerPayload,
-                headers)
-
-        val responseLaw = restTemplate.exchange(CreateUrlWithPort.create("/api/v1/employees/law", port),
-                HttpMethod.POST, entityLaw, responseType)
-        headers.setBearerAuth(generateToken(addLawyerPayload.email))
-        val addProjectPayload = getAddProjectPayload()
         val entity: HttpEntity<*> = HttpEntity<Any?>(headers)
 
         val response = restTemplate.exchange(CreateUrlWithPort.create("/api/v1/projects", port),
                 HttpMethod.GET, entity, responseType)
         val project = response.body?.get("payload")
-        val projectType: List<Project> = ArrayList<Project>()
         val mapper = ModelMapper()
         val projectData: List<Project> = listOf(mapper.map(project, Project::class.java))
-
-        println("wisdom is $projectData")
-
         val actual = response.statusCode
         assertTrue(actual.is2xxSuccessful);
     }
 
-    companion object {
-        @AfterAll
-        fun deleteUser() {
-            println("Done testinggggggggggggggggggggggggg. Hope you are fineeeeeeeeeeeeeeeeeeeeeeeee")
-        }
 
-        @BeforeAll
-        fun getUserToken(){
-
-        }
-    }
 }

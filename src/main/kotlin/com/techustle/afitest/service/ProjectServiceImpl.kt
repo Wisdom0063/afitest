@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import com.techustle.afitest.exception.ExceptionType.ENTITY_NOT_FOUND
 import com.techustle.afitest.exception.EntityType.PROJECT
+import com.techustle.afitest.exception.ExceptionType.DUPLICATE_ENTITY
 import com.techustle.afitest.exception.ThrowCustomException
 
 
 @Service
 class  ProjectServiceImpl(@Autowired private  val projectRepository: ProjectRepository):ProjectService{
     override fun addProject(name: String): Project {
+        ensureProjectByName(name)
         var project:Project = Project(name = name)
        return projectRepository.save(project)
     }
@@ -27,6 +29,18 @@ class  ProjectServiceImpl(@Autowired private  val projectRepository: ProjectRepo
 
         }else{
             throw ThrowCustomException.exception(entityType = PROJECT, exceptionType = ENTITY_NOT_FOUND);
+        }
+    }
+
+    override fun ensureProjectByName(name: String): Project {
+        val optionalProject = projectRepository.findByName(name)
+        if(optionalProject.isPresent){
+            throw ThrowCustomException.exception(DUPLICATE_ENTITY, "project with name $name already exist");
+
+
+        }else{
+            return  optionalProject.get()
+
         }
     }
 

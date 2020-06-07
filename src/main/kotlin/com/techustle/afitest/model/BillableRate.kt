@@ -1,10 +1,12 @@
 package  com.techustle.afitest.model
 
+import org.springframework.core.annotation.Order
 import java.time.LocalDateTime
 import javax.persistence.*
 
 
 @Entity(name = "billable_rates")
+@Order(1)
 data class BillableRate(
         @Id
         @GeneratedValue(

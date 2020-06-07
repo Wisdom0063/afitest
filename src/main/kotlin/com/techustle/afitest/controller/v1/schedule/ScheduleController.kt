@@ -7,6 +7,8 @@
 package  com.techustle.afitest.controller.v1.schedule
 
 import com.techustle.afitest.controller.v1.schedule.payload.AddShedulePayload
+import com.techustle.afitest.dto.mapper.TimetableMapper
+import com.techustle.afitest.dto.model.EmployeeDto
 import com.techustle.afitest.dto.model.InvoiceDto
 import com.techustle.afitest.dto.model.TimetableDto
 import com.techustle.afitest.dto.response.Response
@@ -19,25 +21,41 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/v1/schedules")
-class  ScheduleController(@Autowired private  val  scheduleService: ScheduleService){
+class  ScheduleController(@Autowired private  val  scheduleService: ScheduleService, @Autowired private  val timetableMapper: TimetableMapper){
     @PostMapping("")
-    fun addSchedule(@RequestBody @Valid scheduleData: AddShedulePayload):Response<Schedule>{
+    fun addSchedule(@RequestBody @Valid scheduleData: AddShedulePayload):Response<TimetableDto>{
          val schedule: Schedule = scheduleService.addSchedule(employeeId = scheduleData.employeeId, projectId = scheduleData.projectId, startTime = scheduleData.startTime, endTime = scheduleData.endTime)
-        return  Response.ok<Schedule>().setResponsePayload(schedule)
+        return  Response.ok<TimetableDto>().setResponsePayload(timetableMapper.toTimetabelDto(schedule))
 
     }
 
     @GetMapping("")
-    fun getAllSchedules():Response<List<Schedule>>{
+    fun getAllSchedules():Response<List<TimetableDto>>{
         val  schedules: List<Schedule> = scheduleService.getAllSchedules()
-        return  Response.ok<List<Schedule>>().setResponsePayload(schedules)
+        var timetableDtos : MutableList<TimetableDto> = ArrayList<TimetableDto>()
+
+        for (schedule in schedules){
+            timetableDtos.add(timetableMapper.toTimetabelDto(schedule))
+
+        }
+
+        return  Response.ok<List<TimetableDto>>().setResponsePayload(timetableDtos)
     }
 
 
     @GetMapping("/employees/{id}")
-    fun getEmployeeSchedules(@PathVariable(value = "id") employeeId: Long):Response<List<Schedule>>{
+    fun getEmployeeSchedules(@PathVariable(value = "id") employeeId: Long):Response<List<TimetableDto>>{
         val  schedules: List<Schedule> = scheduleService.getEmployeeSchedules(employeeId)
-        return  Response.ok<List<Schedule>>().setResponsePayload(schedules)
+
+        var timetableDtos : MutableList<TimetableDto> = ArrayList<TimetableDto>()
+
+        for (schedule in schedules){
+            timetableDtos.add(timetableMapper.toTimetabelDto(schedule))
+
+        }
+
+        return  Response.ok<List<TimetableDto>>().setResponsePayload(timetableDtos)
+        return  Response.ok<List<TimetableDto>>().setResponsePayload(timetableDtos)
     }
 
 

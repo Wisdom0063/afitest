@@ -6,7 +6,7 @@ import java.time.LocalTime
 import javax.persistence.*
 
 
-@Entity(name = "schedules")
+@Entity(name = "lawyer_schedules")
 data class Schedule(
         @Id
         @GeneratedValue(

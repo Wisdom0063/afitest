@@ -26,7 +26,7 @@ interface  ScheduleRepository:JpaRepository<Schedule, Long>{
 //            publicationTimeStart: Date?,
 //            publicationTimeEnd: Date?): List<Article?>?
 
-    @Query("select a from schedules a where a.date >= :date and a.employee = :employee")
+    @Query("select a from lawyer_schedules a where a.date >= :date and a.employee = :employee")
     fun findAllWithDateBefore(  @Param("employee") employee: Employee, @Param("date") date: LocalDate): List<Schedule>
 
 

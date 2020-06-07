@@ -43,7 +43,7 @@ class ItemControllerAdvice {
       ex.printStackTrace()
       val fieldName = ex.path.joinToString(separator = ".") { it.fieldName }
       val response: Response<Any> = Response.exception()
-      val error = ResponseError("$fieldName is not be null", ex)
+      val error = ResponseError("$fieldName is required", ex)
       response.setErrors(error)
       return ResponseEntity(response, HttpStatus.BAD_REQUEST)
    }

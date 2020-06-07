@@ -37,7 +37,7 @@ class UserController(@Autowired private  val employeeService: EmployeeService, @
         var employeeDtos : MutableList<EmployeeDto> = ArrayList<EmployeeDto>()
 
         for (lawyer in lawyers){
-            employeeDtos.add(employeeMapper.toUserDto(lawyer))
+            employeeDtos.add(employeeMapper.toEmployeeDto(lawyer))
 
         }
 
@@ -48,14 +48,14 @@ class UserController(@Autowired private  val employeeService: EmployeeService, @
     @PostMapping("/law")
     fun addLawyer(  @RequestBody @Valid userData : AddLawyerPayload): Response<EmployeeDto> {
        var result =  employeeService.signup(email =  userData.email, name = userData.name, password = passwordEncoder.encode("123456"), role = "LAWYER", rate=userData.rate)
-        return   Response.ok<EmployeeDto>().setResponsePayload(employeeMapper.toUserDto(result))
+        return   Response.ok<EmployeeDto>().setResponsePayload(employeeMapper.toEmployeeDto(result))
 
     }
 
     @PostMapping("/finance")
     fun addFinanceMember(  @RequestBody @Valid userData : AddFinancePayload): Response<EmployeeDto> {
         var result =  employeeService.signup(email =  userData.email, name = userData.name, password = passwordEncoder.encode(userData.password), role = "FINANCE", rate = null)
-        return   Response.ok<EmployeeDto>().setResponsePayload(employeeMapper.toUserDto(result))
+        return   Response.ok<EmployeeDto>().setResponsePayload(employeeMapper.toEmployeeDto(result))
 
     }
 

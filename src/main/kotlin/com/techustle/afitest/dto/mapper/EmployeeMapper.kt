@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component
 
 @Component
 class EmployeeMapper(private  val billableRateRepository: BillableRateRepository) {
-        fun toUserDto(employee: Employee): EmployeeDto {
+        fun toEmployeeDto(employee: Employee): EmployeeDto {
             if (employee.role == "LAWYER") {
               val billableRate = billableRateRepository.findByEmployee(employee)
 
-                if (billableRate != null) {
-                    return EmployeeDto(id=employee.id, name = employee.name, email = employee.email, role = employee.role, rate = billableRate.get().rate)
+                if (billableRate[0] != null) {
+                    return EmployeeDto(id=employee.id, name = employee.name, email = employee.email, role = employee.role, rate = billableRate[0].rate)
                 }
             }
             return EmployeeDto(id=employee.id, name = employee.name, email = employee.email, role = employee.role)
