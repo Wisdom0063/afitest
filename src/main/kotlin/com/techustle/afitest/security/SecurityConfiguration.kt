@@ -1,3 +1,10 @@
+/*
+ * @Author: Wisdom Kwarteng 
+ * @Date: 2020-06-02 19:54:53 
+ * @Last Modified by: Wisdom Kwarteng
+ * @Last Modified time: 2020-06-07 19:55:36
+ * @Desc: Security configuration for this application
+ */
 package  com.techustle.afitest.security
 
 

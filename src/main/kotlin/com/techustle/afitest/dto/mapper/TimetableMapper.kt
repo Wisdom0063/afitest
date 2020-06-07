@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
-class TimetableMapper {
+class TimetableMapper() {
     fun toTimetabelDto(schedule: Schedule): TimetableDto {
         return TimetableDto(id=schedule.id, employeeId = schedule.employee.id, rate = schedule.billableRate.rate, startTime = schedule.startTime, date = schedule.date, endTime = schedule.endTime, project = schedule.project.name)
 

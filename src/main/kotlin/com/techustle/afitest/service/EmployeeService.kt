@@ -30,7 +30,7 @@ interface EmployeeService {
      * @param email
      * @return
      */
-    fun findUserByEmail(email: String): Employee // /**
+    fun findEmployeeByEmail(email: String): Employee // /**
 
 
 
@@ -41,7 +41,7 @@ interface EmployeeService {
      * @param employeeid
      * @return
      */
-    fun findUserById(employeeId: Long): Employee // /**
+    fun findEmployeeById(employeeId: Long): Employee // /**
 
     /**
      * get lawyers

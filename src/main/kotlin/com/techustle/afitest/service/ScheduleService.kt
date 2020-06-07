@@ -1,8 +1,9 @@
 /*
  * @Author: Wisdom Kwarteng 
  * @Date: 2020-06-01 13:06:16 
- * @Last Modified by:   Wisdom Kwarteng 
- * @Last Modified time: 2020-06-01 13:06:16 
+ * @Last Modified by: Wisdom Kwarteng
+ * @Last Modified time: 2020-06-07 20:01:14
+ * @Desc: Schedule service interface
  */
 package  com.techustle.afitest.service
 

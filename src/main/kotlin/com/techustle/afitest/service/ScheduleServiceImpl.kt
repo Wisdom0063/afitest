@@ -1,8 +1,10 @@
 /*
  * @Author: Wisdom Kwarteng 
  * @Date: 2020-06-01 13:06:21 
- * @Last Modified by:   Wisdom Kwarteng 
- * @Last Modified time: 2020-06-01 13:06:21 
+ * @Last Modified by: Wisdom Kwarteng
+ * @Last Modified time: 2020-06-07 20:12:21
+ * @Desc: Schedule service implementation
+
  */
 package com.techustle.afitest.service
 
@@ -18,8 +20,6 @@ import com.techustle.afitest.repository.ScheduleRepository
 import com.techustle.afitest.utils.ensureDateFallsWithinTheWeek
 import com.techustle.afitest.utils.generateFirstDayOfWeek
 import com.techustle.afitest.utils.generateHours
-import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.ArrayList
@@ -33,8 +33,19 @@ class ScheduleServiceImpl(
     @Autowired private val employeeService: EmployeeService,
     @Autowired private val billableRateRepository: BillableRateRepository
 ) : ScheduleService {
-    /**
-     *
+
+     /**
+     * <p>Add lawyer schedule. It checks if time range is valid, Lawyer is free with that specified time, falls within the week </>
+    * <p>It uses the latest billable rate of the lawyer</>
+    * <p>It checks if lawyer exist</>
+    * <p>It checks if project exist</>
+
+     * @param employeeId
+     * @param projectId
+     * @param startTime
+     * @param endTime
+
+     * @return
      */
     override fun addSchedule(employeeId: Long, projectId: Long, startTime: LocalDateTime, endTime: LocalDateTime): Schedule {
 
@@ -43,11 +54,11 @@ class ScheduleServiceImpl(
             if (startTime.isBefore(endTime) && startTime.toLocalDate().isEqual(endTime.toLocalDate())) {
 
                 val project: Project = projectService.getProjectById(projectId)
-                val employee = employeeService.findUserById(employeeId)
+                val employee = employeeService.findEmployeeById(employeeId)
                 val rateList = billableRateRepository.findByEmployee(employee)
                 val rate = rateList[0]
 
-                if (rate!=null) {
+                if (rate != null) {
 
                 val employeeSchedules = scheduleRepository.findSchedulesByEmployeeIdAndDate(employeeId, startTime.toLocalDate())
                 for (schedule in employeeSchedules) {
@@ -63,11 +74,10 @@ class ScheduleServiceImpl(
 
                 val schedule = Schedule(employee = employee, project = project, billableRate = rate, startTime = startTime.toLocalTime(), endTime = endTime.toLocalTime(), date = startTime.toLocalDate())
                 return scheduleRepository.save(schedule)
-            }else{
+            } else {
                     throw ThrowCustomException.exception(ExceptionType.BAD_REQUEST, "${employee.name} has no billable rate")
                 }
-                }
-                else {
+                } else {
                 throw ThrowCustomException.exception(ExceptionType.BAD_REQUEST, "Make sure end time is ahead of start time")
             }
         } else {
@@ -76,14 +86,14 @@ class ScheduleServiceImpl(
     }
 
     /**
-     *
+     * Get schedule by id
      */
     override fun getScheduleById(id: Long): Optional<Schedule> {
         return scheduleRepository.findById(id)
     }
 
     /**
-     *
+     * Get all schedules
      */
 
     override fun getAllSchedules(): List<Schedule> {
@@ -91,14 +101,14 @@ class ScheduleServiceImpl(
     }
 
     /**
-     *
+     * Get employee schedules
      */
     override fun getEmployeeSchedules(employeeId: Long): List<Schedule> {
         return scheduleRepository.findSchedulesByEmployeeId(employeeId)
     }
 
     override fun generateEmployeeTimeTable(employeeId: Long): List<TimetableDto> {
-        val employee = employeeService.findUserById(employeeId)
+        val employee = employeeService.findEmployeeById(employeeId)
 
         val date = generateFirstDayOfWeek()
 
@@ -111,6 +121,11 @@ class ScheduleServiceImpl(
 
         return timetable
     }
+
+    /**
+     * <p>Generate Company invoice</p>
+     * <p>Generate total hours for each lawyer on the project
+     */
 
     override fun generateCompanyInvoice(projectId: Long): List<InvoiceDto> {
       projectService.getProjectById(projectId)

@@ -1,5 +1,4 @@
 # Afitest API
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FSpring-Boot-Framework%2FSpring-Boot-Application-Template.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FSpring-Boot-Framework%2FSpring-Boot-Application-Template?ref=badge_shield)
 
 This is the Affitest API description and how to run the application
 
@@ -59,7 +58,6 @@ The project (a.k.a. project directory) has a particular directory structure. A r
 │           ├── com.techustle.afitest.exception
 │           ├── com.techustle.afitest.model
 │           ├── com.techustle.afitest.security
-|           |-- com.techustle.afitest.dto
 │           ├── com.techustle.afitest.utils
 │           └── com.techustle.afitest.service
 ├── src
