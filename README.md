@@ -85,6 +85,8 @@ The project (a.k.a. project directory) has a particular directory structure. A r
 
 - `resources/` - Contains all the static resources, templates and property files.
 - `resources/application.properties` - It contains application-wide properties. Spring reads the properties defined in this file to configure your application. You can define server’s default port, server’s context path, database URLs etc, in this file.
+- `resources/application-dev.properties` - Contains application properties when using an actual database
+- `resources/application-test.properties` - Contains application properties when using an in-memory database and also use for testing
 - `resources/error.properties` - It contains templates for error messages.
 - `resources/notification.properties` - It contains templates for notification messages.
 
