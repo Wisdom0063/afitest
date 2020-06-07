@@ -8,6 +8,8 @@ This is the Affitest API description and how to run the application
 * 	[Maven](https://maven.apache.org/) - Dependency Management
 * 	[Spring Boot](https://spring.io/projects/spring-boot) - Framework to ease the bootstrapping and development of new Spring Applications
 * 	[Hibernate](https://hibernate.org/) - Hibernate ORM is an object-relational mapping tool for the Java programming language
+* 	[MYSQL](https://mysql.com/) -MySQL is an open-source relational database management system.
+* 	[JWT](https://jwt.io/) - JSON Web Token (JWT) is a compact URL-safe means of representing claims to be transferred between two parties
 * 	[git](https://git-scm.com/) - Free and Open-Source distributed version control system 
 * 	[Thymeleaf](https://www.thymeleaf.org/) - Modern server-side Java template engine for both web and standalone environments.
 
@@ -16,11 +18,11 @@ This is the Affitest API description and how to run the application
 
 * The frontend of the application is built with react which depends on node and npm. So for easy access without installing node and npm, the frontend is bundled and being served by the api. `https://github.com/Wisdom0063/afitest-web` is the frontend repo url
 * The application uses Mysql database and for easy access, an in-memory database is used. You can change this behaviour by providing the mysql database credentials in /src/main/resources/applicaton-dev.properties
-* A default finace team member with email `finance@gmail.com` and password `123456` is created on application start
 * Request validation is done at the API level
 * API is versioned and version one base path `http://localhost:8080/api/v1`
 * The frontend base path is `http://localhost:8080`
 * A user is either a finance team member or a lawyer
+* A default finace team member with email `finance@gmail.com` and password `123456` is created on application start
 * A finance team member adds a lawyer to the application and a default password `123456` is generated for them
 
 
@@ -34,7 +36,9 @@ To run the application cd into the root directory and use the [Spring Boot Maven
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 
 
+## Documentation
 
+* Import this [Post collection](https://www.getpostman.com/collections/88fa5728813068ef0c54) to know how to interact with the API
 
 
 ## Files and Directories
@@ -64,6 +68,8 @@ The project (a.k.a. project directory) has a particular directory structure. A r
 │           └── static
 │           ├── templates
 │           ├── application.properties
+│           ├── application-dev.properties
+│           ├── application-test.properties
 │           ├── error.properties
 │           ├── notification.properties
 
@@ -95,10 +101,8 @@ The project (a.k.a. project directory) has a particular directory structure. A r
 - `resources/application-dev.properties` - Contains application properties when using an actual database
 - `resources/application-test.properties` - Contains application properties when using an in-memory database and also use for testing
 - `resources/error.properties` - It contains templates for error messages.
-- `resources/static/main.js` - Reactjs static file compiled and transpiled with webpack
+- `resources/static/main.js` - Reactjs static file compiled and transpiled with webpack and babel
 - `resources/template/index.html` - The root html file that loads the main.js file
-- `resources/notification.properties` - It contains templates for notification messages.
-
 - `test/` - contains unit and integration tests
 
 - `pom.xml` - contains all the project dependencies
